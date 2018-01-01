@@ -14,8 +14,6 @@ namespace Backend.Database
 
         }
 
-
-
         public DbSet<Empresa> Empresas { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Colaborador> Colaboradores { get; set; }
