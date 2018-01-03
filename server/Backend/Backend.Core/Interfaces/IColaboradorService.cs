@@ -8,9 +8,10 @@ namespace Backend.Core.Interfaces
     public interface IColaboradorService
     {
         void Novo(Colaborador model);
+        Colaborador ObterColaborador(int id);
         Colaborador Alterar(Colaborador model);
         List<Colaborador> ListarColaboradores();
-        void DemitirColaborador(int id);
-        void RemoverColaborador(int id);
+        void DemitirColaborador(Colaborador model);
+        void RemoverColaborador(Colaborador model);
     }
 }

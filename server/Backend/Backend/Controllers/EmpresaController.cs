@@ -11,15 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Pessoa")]
-    public class PessoaController : Controller
+    [Route("api/Empresa")]
+    public class EmpresaController : Controller
     {
+        private readonly IEmpresaService _empresaService;
 
-        private readonly IPessoaService _pessoaService;
-
-        public PessoaController(IPessoaService pessoaService)
+        public EmpresaController(IEmpresaService empresaService)
         {
-            _pessoaService = pessoaService;
+            _empresaService = empresaService;
         }
 
         [HttpGet]
@@ -27,9 +26,9 @@ namespace Backend.Controllers
         {
             try
             {
-                var pessoas = _pessoaService.ListarPessoas();
+                var empresas = _empresaService.ListarEmpresas();
 
-                return new OkObjectResult(pessoas);
+                return new OkObjectResult(empresas);
             }
             catch (Exception e)
             {
@@ -47,7 +46,7 @@ namespace Backend.Controllers
         {
             try
             {
-                var p = _pessoaService.ObterPessoa(id);
+                var p = _empresaService.ObterEmpresa(id);
 
                 return new OkObjectResult(p);
             }
@@ -64,11 +63,11 @@ namespace Backend.Controllers
 
         
         [HttpPost]
-        public IActionResult Post([FromBody]Pessoa model)
+        public IActionResult Post([FromBody]Empresa model)
         {
             try
             {
-                var id = _pessoaService.Novo(model);
+                var id = _empresaService.Novo(model);
                 return new OkObjectResult(id);
             }
             catch (Exception e)
@@ -84,11 +83,11 @@ namespace Backend.Controllers
 
         
         [HttpPut]
-        public IActionResult Put([FromBody]Pessoa model)
+        public IActionResult Put([FromBody]Empresa model)
         {
             try
             {
-                var id = _pessoaService.Alterar(model);
+                var id = _empresaService.Alterar(model);
                 return new OkObjectResult(id);
             }
             catch (Exception e)
@@ -108,7 +107,7 @@ namespace Backend.Controllers
         {
             try
             {
-                _pessoaService.RemoverPessoa(id);
+                _empresaService.RemoverEmpresa(id);
                 return Ok();
             }
             catch (Exception e)

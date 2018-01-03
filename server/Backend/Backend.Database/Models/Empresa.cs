@@ -4,8 +4,14 @@ using System.Text;
 
 namespace Backend.Database.Models
 {
-    public class Empresa
+    public partial class Empresa
     {
+
+        public Empresa()
+        {
+            Colaboradores = new HashSet<Colaborador>();
+        }
+
         public int Id { get; set; }
         public string Nome { get; set; }
         public string RazaoSocial { get; set; }

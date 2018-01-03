@@ -5,36 +5,39 @@ using System.Text;
 using Backend.Core.Interfaces;
 using Backend.Database;
 using Backend.Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Core.Services
 {
     public class EmpresaService : IEmpresaService
     {
-        private readonly DatabaseContext _ctx;
+
         private readonly IUtilsService _utilsService;
 
-        public EmpresaService(IUtilsService utilsService, DatabaseContext ctx)
+        public EmpresaService(IUtilsService utilsService)
         {
             _utilsService = utilsService;
-            _ctx = ctx;
         }
 
         public int Novo(Empresa model)
         {
             try
             {
-                if (_utilsService.ValidarCnpfcnpj(model.Cnpj))
+                using (var ctx = new DatabaseContext())
                 {
-                    _ctx.Empresas.Add(model);
-                    _ctx.SaveChanges();
+                    if (_utilsService.ValidarCnpfcnpj(model.Cnpj))
+                    {
+                        ctx.Empresas.Add(model);
+                        ctx.SaveChanges();
 
-                    return model.Id;
-                }
-                else
-                {
-                    throw new Exception("CPF/CNPJ não informado");
-                }
+                        return model.Id;
+                    }
+                    else
+                    {
+                        throw new Exception("CPF/CNPJ não informado");
+                    }
 
+                }
             }
             catch (Exception e)
             {
@@ -47,13 +50,16 @@ namespace Backend.Core.Services
         {
             try
             {
-                var empresa = _ctx.Empresas.Find(id);
+                using (var ctx = new DatabaseContext())
+                {
+                    var empresa = ctx.Empresas.Include(x=> x.Colaboradores).ThenInclude(x=> x.Pessoa).FirstOrDefault(x=> x.Id == id);
 
-                if (empresa != null)
-                    return empresa;
-                else
-                    throw new Exception("Empresa não encontrada");
+                    if (empresa != null)
+                        return empresa;
+                    else
+                        throw new Exception("Empresa não encontrada");
 
+                }
             }
             catch (Exception e)
             {
@@ -66,14 +72,17 @@ namespace Backend.Core.Services
         {
             try
             {
-                var edit = _ctx.Empresas.Find(model.Id);
-                edit.Nome = model.Nome;
-                edit.RazaoSocial = model.RazaoSocial;
-                edit.Cnpj = model.Cnpj;
+                using (var ctx = new DatabaseContext())
+                {
+                    var edit = ctx.Empresas.Find(model.Id);
+                    edit.Nome = model.Nome ?? edit.Nome;
+                    edit.RazaoSocial = model.RazaoSocial ?? edit.RazaoSocial;
+                    edit.Cnpj = model.Cnpj ?? edit.Cnpj;
 
-                _ctx.SaveChanges();
+                    ctx.SaveChanges();
 
-                return edit;
+                    return edit;
+                }
             }
             catch (Exception e)
             {
@@ -86,8 +95,11 @@ namespace Backend.Core.Services
         {
             try
             {
-                var empresas = _ctx.Empresas.ToList().ToList();
-                return empresas;
+                using (var ctx = new DatabaseContext())
+                {
+                    var empresas = ctx.Empresas.ToList();
+                    return empresas;
+                }
             }
             catch (Exception e)
             {
@@ -100,7 +112,10 @@ namespace Backend.Core.Services
         {
             try
             {
-                _ctx.Empresas.Remove(ObterEmpresa(id));
+                using (var ctx = new DatabaseContext())
+                {
+                    ctx.Empresas.Remove(ObterEmpresa(id));
+                }
             }
             catch (Exception e)
             {

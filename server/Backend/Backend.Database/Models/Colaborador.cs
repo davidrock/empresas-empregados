@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Backend.Database.Models
 {
-    public class Colaborador
+    public partial class Colaborador
     {
         public int EmpresaId { get; set; }
         public int PessoaId { get; set; }

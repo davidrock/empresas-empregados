@@ -11,15 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Pessoa")]
-    public class PessoaController : Controller
+    [Route("api/Colaborador")]
+    public class ColaboradorController : Controller
     {
+        private readonly IColaboradorService _colaboradorService;
 
-        private readonly IPessoaService _pessoaService;
-
-        public PessoaController(IPessoaService pessoaService)
+        public ColaboradorController(IColaboradorService colaboradorService)
         {
-            _pessoaService = pessoaService;
+            _colaboradorService = colaboradorService;
         }
 
         [HttpGet]
@@ -27,9 +26,9 @@ namespace Backend.Controllers
         {
             try
             {
-                var pessoas = _pessoaService.ListarPessoas();
+                var colaboradors = _colaboradorService.ListarColaboradores();
 
-                return new OkObjectResult(pessoas);
+                return new OkObjectResult(colaboradors);
             }
             catch (Exception e)
             {
@@ -47,7 +46,7 @@ namespace Backend.Controllers
         {
             try
             {
-                var p = _pessoaService.ObterPessoa(id);
+                var p = _colaboradorService.ObterColaborador(id);
 
                 return new OkObjectResult(p);
             }
@@ -61,15 +60,14 @@ namespace Backend.Controllers
                 });
             }
         }
-
         
         [HttpPost]
-        public IActionResult Post([FromBody]Pessoa model)
+        public IActionResult Post([FromBody]Colaborador model)
         {
             try
             {
-                var id = _pessoaService.Novo(model);
-                return new OkObjectResult(id);
+                _colaboradorService.Novo(model);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -81,14 +79,13 @@ namespace Backend.Controllers
                 });
             }
         }
-
         
         [HttpPut]
-        public IActionResult Put([FromBody]Pessoa model)
+        public IActionResult Put([FromBody]Colaborador model)
         {
             try
             {
-                var id = _pessoaService.Alterar(model);
+                var id = _colaboradorService.Alterar(model);
                 return new OkObjectResult(id);
             }
             catch (Exception e)
@@ -103,12 +100,31 @@ namespace Backend.Controllers
         }
 
         
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpDelete]
+        public IActionResult Delete(Colaborador model)
         {
             try
             {
-                _pessoaService.RemoverPessoa(id);
+                _colaboradorService.RemoverColaborador(model);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new BadRequestObjectResult(new ErrorModel
+                {
+                    Code = 500,
+                    Motivo = e.Message
+                });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Demitir(Colaborador model)
+        {
+            try
+            {
+                _colaboradorService.DemitirColaborador(model);
                 return Ok();
             }
             catch (Exception e)

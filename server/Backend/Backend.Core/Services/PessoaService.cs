@@ -10,12 +10,11 @@ namespace Backend.Core.Services
 {
     public class PessoaService : IPessoaService
     {
-        private readonly DatabaseContext _ctx;
+
         private readonly IUtilsService _utilsService;
 
-        public PessoaService(DatabaseContext context, IUtilsService utilsService)
+        public PessoaService(IUtilsService utilsService)
         {
-            _ctx = context;
             _utilsService = utilsService;
         }
 
@@ -23,16 +22,21 @@ namespace Backend.Core.Services
         {
             try
             {
-                if (_utilsService.ValidarCnpfcnpj(model.Cpf))
+                using (var ctx = new DatabaseContext())
                 {
-                    _ctx.Pessoas.Add(model);
-                    _ctx.SaveChanges();
 
-                    return model.Id;
-                }
-                else
-                {
-                    throw new Exception("CPF/CNPJ não informado");
+
+                    if (_utilsService.ValidarCnpfcnpj(model.Cpf))
+                    {
+                        ctx.Pessoas.Add(model);
+                        ctx.SaveChanges();
+
+                        return model.Id;
+                    }
+                    else
+                    {
+                        throw new Exception("CPF/CNPJ não informado");
+                    }
                 }
 
             }
@@ -47,13 +51,16 @@ namespace Backend.Core.Services
         {
             try
             {
-                var pessoa = _ctx.Pessoas.Find(id);
+                using (var ctx = new DatabaseContext())
+                {
+                    var pessoa = ctx.Pessoas.Find(id);
 
-                if (pessoa != null)
-                    return pessoa;
-                else
-                    throw new Exception("Pessoa não encontrada");
+                    if (pessoa != null)
+                        return pessoa;
+                    else
+                        throw new Exception("Pessoa não encontrada");
 
+                }
             }
             catch (Exception e)
             {
@@ -66,14 +73,17 @@ namespace Backend.Core.Services
         {
             try
             {
-                var edit = _ctx.Pessoas.Find(model.Id);
-                edit.Cpf = model.Cpf;
-                edit.Nome = model.Nome;
-                edit.DtNascimento = model.DtNascimento;
+                using (var ctx = new DatabaseContext())
+                {
+                    var edit = ctx.Pessoas.Find(model.Id);
+                    edit.Cpf = model.Cpf ?? edit.Cpf;
+                    edit.Nome = model.Nome ?? edit.Nome;
+                    edit.DtNascimento = model.DtNascimento == DateTime.MinValue ? edit.DtNascimento : model.DtNascimento;
 
-                _ctx.SaveChanges();
+                    ctx.SaveChanges();
 
-                return edit;
+                    return edit;
+                }
             }
             catch (Exception e)
             {
@@ -86,8 +96,11 @@ namespace Backend.Core.Services
         {
             try
             {
-                var pessoas = _ctx.Pessoas.ToList().ToList();
-                return pessoas;
+                using (var ctx = new DatabaseContext())
+                {
+                    var pessoas = ctx.Pessoas.ToList().ToList();
+                    return pessoas;
+                }
             }
             catch (Exception e)
             {
@@ -100,7 +113,10 @@ namespace Backend.Core.Services
         {
             try
             {
-                _ctx.Pessoas.Remove(ObterPessoa(id));
+                using (var ctx = new DatabaseContext())
+                {
+                    ctx.Pessoas.Remove(ObterPessoa(id));
+                }
             }
             catch (Exception e)
             {

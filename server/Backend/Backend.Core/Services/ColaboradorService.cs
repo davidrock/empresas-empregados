@@ -5,32 +5,53 @@ using System.Text;
 using Backend.Core.Interfaces;
 using Backend.Database;
 using Backend.Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Core.Services
 {
     public class ColaboradorService : IColaboradorService
     {
-        private readonly DatabaseContext _ctx;
 
-        public ColaboradorService(DatabaseContext ctx)
-        {
-            _ctx = ctx;
-        }
 
         public void Novo(Colaborador model)
         {
             try
             {
-                var novo = new Colaborador();
-                novo.Pessoa = _ctx.Pessoas.Find(model.PessoaId);
-                novo.Empresa = _ctx.Empresas.Find(model.EmpresaId);
-                novo.Cargo = model.Cargo;
-                novo.DtCadastro = DateTime.Now;
-                novo.Salario = model.Salario;
-                novo.Status = (int)Enums.Status.Ativo;
+                using (var ctx = new DatabaseContext())
+                {
+                    var novo = new Colaborador();
+                    novo.Pessoa = ctx.Pessoas.Find(model.PessoaId);
+                    novo.Empresa = ctx.Empresas.Find(model.EmpresaId);
+                    novo.Cargo = model.Cargo;
+                    novo.DtCadastro = DateTime.Now;
+                    novo.Salario = model.Salario;
+                    novo.Status = (int)Enums.Status.Ativo;
 
-                _ctx.Colaboradores.Add(novo);
-                _ctx.SaveChanges();
+                    ctx.Colaboradores.Add(novo);
+                    ctx.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public Colaborador ObterColaborador(int id)
+        {
+            try
+            {
+                using (var ctx = new DatabaseContext())
+                {
+                    var colaborador = ctx.Colaboradores.Find(id);
+
+                    if (colaborador != null)
+                        return colaborador;
+                    else
+                        throw new Exception("Empresa não encontrada");
+
+                }
             }
             catch (Exception e)
             {
@@ -43,13 +64,16 @@ namespace Backend.Core.Services
         {
             try
             {
-                var edit = _ctx.Colaboradores.FirstOrDefault(x => x.PessoaId == model.PessoaId && x.EmpresaId == model.EmpresaId);
-                edit.Salario = model.Salario;
-                edit.Cargo = model.Cargo;
+                using (var ctx = new DatabaseContext())
+                {
+                    var edit = ctx.Colaboradores.FirstOrDefault(x => x.PessoaId == model.PessoaId && x.EmpresaId == model.EmpresaId);
+                    edit.Salario = model.Salario == Decimal.MinValue ? edit.Salario : model.Salario;
+                    edit.Cargo = model.Cargo ?? edit.Cargo;
 
-                _ctx.SaveChanges();
+                    ctx.SaveChanges();
 
-                return edit;
+                    return edit;
+                }
             }
             catch (Exception e)
             {
@@ -62,8 +86,11 @@ namespace Backend.Core.Services
         {
             try
             {
-                var colaboradores = _ctx.Colaboradores.ToList();
-                return colaboradores;
+                using (var ctx = new DatabaseContext())
+                {
+                    var colaboradores = ctx.Colaboradores.Include(x => x.Pessoa).Include(x => x.Empresa).ToList();
+                    return colaboradores;
+                }
             }
             catch (Exception e)
             {
@@ -72,14 +99,23 @@ namespace Backend.Core.Services
             }
         }
 
-        public void DemitirColaborador(int id)
+        public void DemitirColaborador(Colaborador model)
         {
             try
             {
-                var colaborador = _ctx.Colaboradores.Find(id);
-                colaborador.Status = (int) Enums.Status.Inativo;
-                colaborador.DtDemissao = DateTime.Now;
-                _ctx.SaveChanges();
+                using (var ctx = new DatabaseContext())
+                {
+                    var colaborador = ctx.Colaboradores.First(x =>
+                    x.PessoaId == model.PessoaId && x.EmpresaId == model.EmpresaId &&
+                    x.Status == (int)Enums.Status.Ativo);
+
+                    if (colaborador == null)
+                        throw new Exception("Colaborador não encontrado");
+
+                    colaborador.Status = (int)Enums.Status.Inativo;
+                    colaborador.DtDemissao = DateTime.Now;
+                    ctx.SaveChanges();
+                }
             }
             catch (Exception e)
             {
@@ -88,18 +124,21 @@ namespace Backend.Core.Services
             }
         }
 
-        public void RemoverColaborador(int id)
+        public void RemoverColaborador(Colaborador model)
         {
             try
             {
+                using (var ctx = new DatabaseContext())
+                {
+                    var colaborador = ctx.Colaboradores.First(x =>
+                    x.PessoaId == model.PessoaId && x.EmpresaId == model.EmpresaId);
 
-                var colaborador = _ctx.Colaboradores.Find(id);
+                    if (colaborador != null)
+                        ctx.Colaboradores.Remove(colaborador);
 
-                if (colaborador != null)
-                    _ctx.Colaboradores.Remove(colaborador);
-
-                else
-                    throw new Exception("Colaborador não encontrado!");
+                    else
+                        throw new Exception("Colaborador não encontrado!");
+                }
             }
             catch (Exception e)
             {

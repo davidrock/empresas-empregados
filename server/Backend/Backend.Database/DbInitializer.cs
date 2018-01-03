@@ -34,7 +34,7 @@ namespace Backend.Database
 
             var colaboradores = new Colaborador[]
             {
-                new Colaborador {Empresa = empresas.First(), Pessoa = pessoas.First(), Salario = 6000, Status = 1}
+                new Colaborador {Empresa = empresas.First(), Pessoa = pessoas.First(), Salario = 6000, Status = 1, Cargo = "Desenvolvedor Web", DtCadastro = DateTime.Now}
             };
 
             context.Pessoas.AddRange(pessoas);

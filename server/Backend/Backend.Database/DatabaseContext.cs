@@ -6,17 +6,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Database
 {
-    public class DatabaseContext : DbContext
+    public partial class DatabaseContext : DbContext
     {
+        public DatabaseContext()
+        {
+        }
 
         public DatabaseContext(DbContextOptions options) : base(options)
         {
 
         }
 
-        public DbSet<Empresa> Empresas { get; set; }
-        public DbSet<Pessoa> Pessoas { get; set; }
-        public DbSet<Colaborador> Colaboradores { get; set; }
+        public  DbSet<Empresa> Empresas { get; set; }
+        public  DbSet<Pessoa> Pessoas { get; set; }
+        public  DbSet<Colaborador> Colaboradores { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,6 +36,14 @@ namespace Backend.Database
                 .HasOne(bc => bc.Empresa)
                 .WithMany(c => c.Colaboradores)
                 .HasForeignKey(bc => bc.EmpresaId);
+        }
+
+         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(@"Data Source=(local);Initial Catalog=App;Integrated Security=True");
+            }
         }
 
     }
