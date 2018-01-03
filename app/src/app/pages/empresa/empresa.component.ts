@@ -21,6 +21,7 @@ import "rxjs/add/operator/catch";
 export class EmpresaComponent implements OnInit {
   empresas: EmpresaModel[] = <EmpresaModel[]>[];
   empresaForm: FormGroup;
+  public mask = [/[1-9]/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/,/\d/,/\d/, /\d/,'-', /\d/,/\d/];
 
   constructor(
     private _http: CustomHttpService,

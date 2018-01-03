@@ -18,6 +18,7 @@ import { CustomHttpService } from "./services/custom-http.service";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NotificationService } from "./services/notification.service";
 import { DateValueAccessorModule } from 'angular-date-value-accessor';
+import { TextMaskModule } from 'angular2-text-mask';
 
 const appRoutes: Routes = [
   { path: "empresa", component: EmpresaComponent },
@@ -51,6 +52,7 @@ export function CustomHttpServiceFactory(
     HttpModule,
     ReactiveFormsModule,
     DateValueAccessorModule,
+    TextMaskModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only

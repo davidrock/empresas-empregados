@@ -20,6 +20,7 @@ import "rxjs/add/operator/catch";
 export class PessoaComponent implements OnInit {
   pessoas: PessoaModel[] = <PessoaModel[]>[];
   pessoaForm: FormGroup;
+  public mask = [/[1-9]/, /\d/,/\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/,/\d/];
 
   constructor(
     private _http: CustomHttpService,
