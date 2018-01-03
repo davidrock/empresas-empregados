@@ -80,4 +80,16 @@ export class ColaboradorComponent implements OnInit {
     );
   }
 
+  demitir(value: ColaboradorModel){
+    this._http.post("colaborador/demitir", value).subscribe(
+      res => {
+        this._swal.sucess("Sucesso!", "Colaborador demitido.");
+        //swal.error("sucesso", "Foi");
+        this.obterColaboradors();
+      },
+      err => this._swal.error("Erro", err.json().motivo),
+      () => console.log("yay")
+    );
+  }
+
 }

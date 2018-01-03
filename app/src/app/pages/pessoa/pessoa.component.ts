@@ -59,4 +59,17 @@ export class PessoaComponent implements OnInit {
       () => console.log("yay")
     );
   }
+
+  remover(value: PessoaModel){
+    this._http.delete("pessoa/" + value.id).subscribe(
+      res => {
+        this._swal.sucess("Sucesso!", "Pessoa removida com sucesso!");
+        //swal.error("sucesso", "Foi");
+        this.obterpessoas();
+      },
+      err => this._swal.error("Erro", err.json().motivo),
+      () => console.log("yay")
+    );
+  }
+
 }

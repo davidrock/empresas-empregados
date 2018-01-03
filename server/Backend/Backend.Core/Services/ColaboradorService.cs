@@ -106,12 +106,13 @@ namespace Backend.Core.Services
             {
                 using (var ctx = new DatabaseContext())
                 {
-                    var colaborador = ctx.Colaboradores.First(x =>
-                    x.PessoaId == model.PessoaId && x.EmpresaId == model.EmpresaId &&
-                    x.Status == (int)Enums.Status.Ativo);
+                    var colaborador = ctx.Colaboradores.First(x => x.Id == model.Id &&
+                    x.PessoaId == model.PessoaId && x.EmpresaId == model.EmpresaId);
 
                     if (colaborador == null)
                         throw new Exception("Colaborador não encontrado");
+                    if (colaborador.Status == (int)Enums.Status.Inativo)
+                        throw new Exception("Colaborador já não pertence mais a essa empresa!");
 
                     colaborador.Status = (int)Enums.Status.Inativo;
                     colaborador.DtDemissao = DateTime.Now;
@@ -135,7 +136,11 @@ namespace Backend.Core.Services
                     x.PessoaId == model.PessoaId && x.EmpresaId == model.EmpresaId);
 
                     if (colaborador != null)
+                    {
                         ctx.Colaboradores.Remove(colaborador);
+                        ctx.SaveChanges();
+                    }
+                        
 
                     else
                         throw new Exception("Colaborador não encontrado!");

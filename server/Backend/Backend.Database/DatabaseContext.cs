@@ -25,7 +25,7 @@ namespace Backend.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Colaborador>()
-                .HasKey(x => new { x.EmpresaId, x.PessoaId});
+                .HasKey(x => new { x.Id});
 
             modelBuilder.Entity<Colaborador>()
                 .HasOne(bc => bc.Pessoa)
@@ -42,7 +42,8 @@ namespace Backend.Database
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Data Source=SQL5037.site4now.net;Initial Catalog=DB_9C4BA4_globalsysteste;User Id=DB_9C4BA4_globalsysteste_admin;Password=Asd4815926");
+                optionsBuilder.UseSqlServer(@"Server=(local);Database=App;Trusted_Connection=True;MultipleActiveResultSets=true");
+                //optionsBuilder.UseSqlServer(@"Data Source=SQL5037.site4now.net;Initial Catalog=DB_9C4BA4_globalsysteste;User Id=DB_9C4BA4_globalsysteste_admin;Password=Asd4815926");
             }
         }
 

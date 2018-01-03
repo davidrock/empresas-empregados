@@ -1,58 +1,57 @@
 <div class="card">
-    <div class="card-header text-white bg-dark mb-3">
-      Pessoa
-    </div>
-    <div class="card-body">
-      <form [formGroup]="pessoaForm" novalidate (ngSubmit)="adicionar(pessoaForm.value, pessoaForm.valid)">
-        <div class="row">
-          <div class="col-sm-12 col-md-6 col-lg-6">
-            <label>Nome</label>
-            <input type="text" formControlName="nome" class="form-control" />
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-6">
-            <label>Data Nascimento</label>
-            <input type="date" class="form-control" formControlName="dtNascimento" useValueAsDate/>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-6">
-              <label>CPF</label>
-              <input type="text" formControlName="cpf" class="form-control" />
-            </div>
+  <div class="card-header text-white bg-dark mb-3">
+    Pessoa
+  </div>
+  <div class="card-body">
+    <form [formGroup]="pessoaForm" novalidate (ngSubmit)="adicionar(pessoaForm.value, pessoaForm.valid)">
+      <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <label>Nome</label>
+          <input type="text" formControlName="nome" class="form-control" />
         </div>
-        <br/>
-        <div class="row">
-          <div class="col-sm-12">
-            <button type="submit" class="btn btn-sm btn-primary">
-              <i class="fa fa-search"></i> Adicionar </button>
-          </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <label>Data Nascimento</label>
+          <input type="date" class="form-control" formControlName="dtNascimento" useValueAsDate/>
         </div>
-      </form>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <label>CPF</label>
+          <input type="text" formControlName="cpf" class="form-control" />
+        </div>
+      </div>
       <br/>
       <div class="row">
-        <div class="col">
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <td>Nome</td>
-                <td>CPF</td>
-                <td>Data Nascimento</td>
-                <td></td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let p of pessoas">
-                <td>{{p.nome}}</td>
-                <td>{{p.cpf}}</td>
-                <td>{{p.dtNascimento | date}}</td>
-                <td>
-                  <button type="button" class="btn btn-sm btn-primary">
-                    <i class="fa fa-pencil"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="col-sm-12">
+          <button type="submit" class="btn btn-sm btn-primary">
+            <i class="fa fa-search"></i> Adicionar </button>
         </div>
+      </div>
+    </form>
+    <br/>
+    <div class="row">
+      <div class="col">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <td>Nome</td>
+              <td>CPF</td>
+              <td>Data Nascimento</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of pessoas">
+              <td>{{p.nome}}</td>
+              <td>{{p.cpf}}</td>
+              <td>{{p.dtNascimento | date}}</td>
+              <td>
+                  <button type="button" class="btn btn-sm btn-danger" (click)=remover(p)>
+                      <i class="fa fa-remove"></i>
+                    </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-  
+</div>

@@ -6,6 +6,7 @@ namespace Backend.Database.Models
 {
     public partial class Colaborador
     {
+        public int Id { get; set; }
         public int EmpresaId { get; set; }
         public int PessoaId { get; set; }
         public decimal Salario { get; set; }

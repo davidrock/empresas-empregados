@@ -44,6 +44,9 @@
               <td>Pessoa</td>
               <td>Salário</td>
               <td>Cargo</td>
+              <td>Data Contratação</td>
+              <td>Data Demissão</td>
+              <td>Status</td>
               <td></td>
             </tr>
           </thead>
@@ -52,10 +55,16 @@
               <td>{{col.empresa.nome}}</td>
               <td>{{col.pessoa.nome}}</td>
               <td>{{col.salario}}</td>
-              <td>{{col.cargo | date}}</td>
+              <td>{{col.cargo}}</td>
+              <td>{{col.dtCadastro | date}}</td>
+              <td>{{col.dtDemissao | date}}</td>
               <td>
-                <button type="button" class="btn btn-sm btn-primary">
-                  <i class="fa fa-pencil"></i>
+                <span *ngIf="col.status == 1" class="text-success">Ativo</span>
+                <span *ngIf="col.status == 0" class="text-danger">Inativo</span>
+              </td>
+              <td>
+                <button type="button" title="Demitir" class="btn btn-sm btn-danger" (click)="demitir(col)">
+                  <i class="fa fa-remove"></i>
                 </button>
               </td>
             </tr>

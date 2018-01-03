@@ -115,6 +115,7 @@ namespace Backend.Core.Services
                 using (var ctx = new DatabaseContext())
                 {
                     ctx.Empresas.Remove(ObterEmpresa(id));
+                    ctx.SaveChanges();
                 }
             }
             catch (Exception e)

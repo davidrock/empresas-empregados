@@ -46,8 +46,8 @@
               <td>{{emp.cnpj}}</td>
               <td>{{emp.dtCadastro | date}}</td>
               <td>
-                <button type="button" class="btn btn-sm btn-primary">
-                  <i class="fa fa-pencil"></i>
+                <button type="button" class="btn btn-sm btn-danger" (click)=remover(emp)>
+                  <i class="fa fa-remove"></i>
                 </button>
               </td>
             </tr>

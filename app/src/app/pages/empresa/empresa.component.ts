@@ -60,4 +60,16 @@ export class EmpresaComponent implements OnInit {
       () => console.log("yay")
     );
   }
+
+  remover(value: EmpresaModel){
+    this._http.delete("empresa/" + value.id).subscribe(
+      res => {
+        this._swal.sucess("Sucesso!", "Empresa removida com sucesso!");
+        //swal.error("sucesso", "Foi");
+        this.obterEmpresas();
+      },
+      err => this._swal.error("Erro", err.json().motivo),
+      () => console.log("yay")
+    );
+  }
 }
