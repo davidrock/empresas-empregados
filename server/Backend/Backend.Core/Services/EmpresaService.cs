@@ -34,7 +34,7 @@ namespace Backend.Core.Services
                     }
                     else
                     {
-                        throw new Exception("CPF/CNPJ não informado");
+                        throw new Exception("CPF/CNPJ inválido");
                     }
 
                 }

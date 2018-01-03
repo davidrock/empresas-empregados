@@ -9,7 +9,10 @@ import {
   FormGroup,
   Validators
 } from "@angular/forms";
-
+import { NotificationService } from "../../services/notification.service";
+import "rxjs/add/observable/throw";
+import "rxjs/add/operator/catch";
+//declare var swal: any;
 @Component({
   selector: "app-empresa",
   templateUrl: "./empresa.component.html",
@@ -19,7 +22,11 @@ export class EmpresaComponent implements OnInit {
   empresas: EmpresaModel[] = <EmpresaModel[]>[];
   empresaForm: FormGroup;
 
-  constructor(private _http: CustomHttpService, private _fb: FormBuilder) {}
+  constructor(
+    private _http: CustomHttpService,
+    private _fb: FormBuilder,
+    private _swal: NotificationService
+  ) {}
 
   ngOnInit() {
     this.obterEmpresas();
@@ -43,13 +50,14 @@ export class EmpresaComponent implements OnInit {
   adicionar(value: any, valid: boolean) {
     console.log(value);
 
-    this._http.post("empresa", value).subscribe(res => {
-      console.log(res);
-      if (res.status == 200) {
+    this._http.post("empresa", value).subscribe(
+      res => {
+        this._swal.sucess("Sucesso!", "Empresa adicionada com sucesso!");
+        //swal.error("sucesso", "Foi");
         this.obterEmpresas();
-      } else {
-        alert('blaa');
-      }
-    });
+      },
+      err => this._swal.error("Erro", err.json().motivo),
+      () => console.log("yay")
+    );
   }
 }

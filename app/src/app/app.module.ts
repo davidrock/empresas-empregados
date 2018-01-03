@@ -16,6 +16,7 @@ import {
 import { ApiXHRBackendService } from "./services/api-xhrbackend.service";
 import { CustomHttpService } from "./services/custom-http.service";
 import { ReactiveFormsModule } from "@angular/forms";
+import { NotificationService } from "./services/notification.service";
 
 const appRoutes: Routes = [
   { path: "empresa", component: EmpresaComponent },
@@ -56,6 +57,7 @@ export function CustomHttpServiceFactory(
   providers: [
     ApiXHRBackendService,
     CustomHttpService,
+    NotificationService,
     { provide: XHRBackend, useClass: ApiXHRBackendService },
     {
       provide: CustomHttpService,
