@@ -19,6 +19,7 @@ namespace Backend.Core.Services
             {
                 using (var ctx = new DatabaseContext())
                 {
+
                     var novo = new Colaborador();
                     novo.Pessoa = ctx.Pessoas.Find(model.PessoaId);
                     novo.Empresa = ctx.Empresas.Find(model.EmpresaId);

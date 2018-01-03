@@ -33,18 +33,16 @@
             <thead>
               <tr>
                 <td>Nome</td>
-                <td>Razão Social</td>
-                <td>CNPJ</td>
-                <td>Data Cadastro</td>
+                <td>CPF</td>
+                <td>Data Nascimento</td>
                 <td></td>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let emp of pessoas">
-                <td>{{emp.nome}}</td>
-                <td>{{emp.razaoSocial}}</td>
-                <td>{{emp.cnpj}}</td>
-                <td>{{emp.dtCadastro | date}}</td>
+              <tr *ngFor="let p of pessoas">
+                <td>{{p.nome}}</td>
+                <td>{{p.cpf}}</td>
+                <td>{{p.dtNascimento | date}}</td>
                 <td>
                   <button type="button" class="btn btn-sm btn-primary">
                     <i class="fa fa-pencil"></i>

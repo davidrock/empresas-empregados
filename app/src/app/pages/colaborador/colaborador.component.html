@@ -1,3 +1,67 @@
-<p>
-  colaborador works!
-</p>
+<div class="card">
+  <div class="card-header text-white bg-success mb-3">
+    Colaborador
+  </div>
+  <div class="card-body">
+    <form [formGroup]="colaboradorForm" novalidate (ngSubmit)="adicionar(colaboradorForm.value, colaboradorForm.valid)">
+      <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <label>Empresa</label>
+          <select class="form-control" formControlName="empresaId">
+            <option *ngFor="let x of empresas" [value]="x.id">{{x.nome}}</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <label>Pessoa</label>
+          <select class="form-control" formControlName="pessoaId">
+            <option *ngFor="let x of pessoas" [value]="x.id">{{x.nome}}</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <label>Salário</label>
+          <input type="text" formControlName="salario" class="form-control" />
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <label>Cargo</label>
+          <input type="text" formControlName="cargo" class="form-control" />
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-sm-12">
+          <button type="submit" class="btn btn-sm btn-primary">
+            <i class="fa fa-search"></i> Adicionar </button>
+        </div>
+      </div>
+    </form>
+    <br/>
+    <div class="row">
+      <div class="col">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <td>Empresa</td>
+              <td>Pessoa</td>
+              <td>Salário</td>
+              <td>Cargo</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let col of colaboradors">
+              <td>{{col.empresa.nome}}</td>
+              <td>{{col.pessoa.nome}}</td>
+              <td>{{col.salario}}</td>
+              <td>{{col.cargo | date}}</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary">
+                  <i class="fa fa-pencil"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
