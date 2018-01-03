@@ -3,12 +3,29 @@
     Empresa
   </div>
   <div class="card-body">
-    <div class="row">
-      <div class="col">
-        <button class="btn btn-sm btn-primary" (click)="selecionarQuote()">
-          <i class="fa fa-search"></i> Adicionar </button>
+    <form [formGroup]="empresaForm" novalidate (ngSubmit)="adicionar(empresaForm.value, empresaForm.valid)">
+      <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <label>Nome</label>
+          <input type="text" formControlName="nome" class="form-control" />
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <label>Razão Social</label>
+          <input type="text" formControlName="razaoSocial" class="form-control" />
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <label>CNPJ</label>
+            <input type="text" formControlName="cnpj" class="form-control" />
+          </div>
       </div>
-    </div>
+      <br/>
+      <div class="row">
+        <div class="col-sm-12">
+          <button type="submit" class="btn btn-sm btn-primary">
+            <i class="fa fa-search"></i> Adicionar </button>
+        </div>
+      </div>
+    </form>
     <br/>
     <div class="row">
       <div class="col">
@@ -23,28 +40,17 @@
             </tr>
           </thead>
           <tbody>
-              <tr>
-                  <td>NOME DA EMPRESA</td>
-                  <td>RAZAO SOCIAL DA EMPRESA</td>
-                  <td>12.525.852/0001-25</td>
-                  <td>01/03/2018 12:00</td>
-                  <td>
-                    <button type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-pencil"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                    <td>NOME DA EMPRESA</td>
-                    <td>RAZAO SOCIAL DA EMPRESA</td>
-                    <td>12.525.852/0001-25</td>
-                    <td>01/03/2018 12:00</td>
-                    <td>
-                      <button type="button" class="btn btn-sm btn-primary">
-                        <i class="fa fa-pencil"></i>
-                      </button>
-                    </td>
-                  </tr>
+            <tr *ngFor="let emp of empresas">
+              <td>{{emp.nome}}</td>
+              <td>{{emp.razaoSocial}}</td>
+              <td>{{emp.cnpj}}</td>
+              <td>{{emp.dtCadastro | date}}</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary">
+                  <i class="fa fa-pencil"></i>
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

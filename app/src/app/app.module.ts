@@ -15,6 +15,7 @@ import {
 } from "@angular/http";
 import { ApiXHRBackendService } from "./services/api-xhrbackend.service";
 import { CustomHttpService } from "./services/custom-http.service";
+import { ReactiveFormsModule } from "@angular/forms";
 
 const appRoutes: Routes = [
   { path: "empresa", component: EmpresaComponent },
@@ -46,6 +47,7 @@ export function CustomHttpServiceFactory(
   imports: [
     BrowserModule,
     HttpModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only
