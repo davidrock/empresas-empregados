@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Backend.Core.Interfaces;
 using Backend.Core.Models;
 using Backend.Database.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
 {
+    [EnableCors("AllowSpecificOrigin")]
     [Produces("application/json")]
     [Route("api/Empresa")]
     public class EmpresaController : Controller

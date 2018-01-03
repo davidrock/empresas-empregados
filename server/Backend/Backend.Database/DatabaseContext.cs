@@ -42,7 +42,7 @@ namespace Backend.Database
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Data Source=(local);Initial Catalog=App;Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Data Source=SQL5037.site4now.net;Initial Catalog=DB_9C4BA4_globalsysteste;User Id=DB_9C4BA4_globalsysteste_admin;Password=Asd4815926");
             }
         }
 

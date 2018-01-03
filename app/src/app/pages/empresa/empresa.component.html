@@ -1,3 +1,53 @@
-<p>
-  empresa works!
-</p>
+<div class="card">
+  <div class="card-header text-white bg-primary mb-3">
+    Empresa
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-sm btn-primary" (click)="selecionarQuote()">
+          <i class="fa fa-search"></i> Adicionar </button>
+      </div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <td>Nome</td>
+              <td>Razão Social</td>
+              <td>CNPJ</td>
+              <td>Data Cadastro</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>NOME DA EMPRESA</td>
+                  <td>RAZAO SOCIAL DA EMPRESA</td>
+                  <td>12.525.852/0001-25</td>
+                  <td>01/03/2018 12:00</td>
+                  <td>
+                    <button type="button" class="btn btn-sm btn-primary">
+                      <i class="fa fa-pencil"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                    <td>NOME DA EMPRESA</td>
+                    <td>RAZAO SOCIAL DA EMPRESA</td>
+                    <td>12.525.852/0001-25</td>
+                    <td>01/03/2018 12:00</td>
+                    <td>
+                      <button type="button" class="btn btn-sm btn-primary">
+                        <i class="fa fa-pencil"></i>
+                      </button>
+                    </td>
+                  </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

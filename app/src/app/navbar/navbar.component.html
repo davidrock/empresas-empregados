@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">David App Avaliação</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/empresa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <em class="fa fa-home"></em> Empresas
+          <span class="sr-only">(current)</span>
+        </a>
+        <!-- <a class="nav-link" href="#">Empresas
+          <span class="sr-only">(current)</span>
+        </a> -->
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" routerLink="/colaborador" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <em class="fa fa-group"></em> Colaboradores
+            <span class="sr-only">(current)</span>
+          </a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" routerLink="/pessoa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <em class="fa fa-user"></em> Pessoas
+            <span class="sr-only">(current)</span>
+          </a>
+      </li>
+    </ul>
+  </div>
+</nav>

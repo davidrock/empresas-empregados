@@ -35,7 +35,18 @@ namespace Backend
             services.AddSingleton<IEmpresaService, EmpresaService>();
             services.AddSingleton<IColaboradorService, ColaboradorService>();
             services.AddSingleton<IUtilsService, UtilsService>();
-            
+
+
+            // Add framework services.
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                        builder.WithOrigins("http://localhost:4200").AllowAnyHeader()
+                            .AllowAnyMethod());
+            });
+
+
             services.AddMvc()
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .AddJsonOptions(options =>
@@ -66,6 +77,8 @@ namespace Backend
 
             app.UseStaticFiles();
 
+            // Shows UseCors with named policy.
+            app.UseCors("AllowSpecificOrigin");
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
