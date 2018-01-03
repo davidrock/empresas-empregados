@@ -120,7 +120,8 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        public IActionResult Demitir(Colaborador model)
+        [Route("demitir")]
+        public IActionResult Demitir([FromBody]Colaborador model)
         {
             try
             {
