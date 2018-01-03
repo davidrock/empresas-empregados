@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Backend.Core.Interfaces;
+using Backend.Core.Services;
 using Backend.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +27,12 @@ namespace Backend
         {
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
+
+            services.AddSingleton<IPessoaService, PessoaService>();
+            services.AddSingleton<IEmpresaService, EmpresaService>();
+            services.AddSingleton<IColaboradorService, ColaboradorService>();
+            services.AddSingleton<IUtilsService, UtilsService>();
 
             services.AddMvc();
         }

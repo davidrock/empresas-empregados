@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Backend.Core.Interfaces;
+using Backend.Core.Models;
+using Backend.Database.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +14,112 @@ namespace Backend.Controllers
     [Route("api/Pessoa")]
     public class PessoaController : Controller
     {
-        // GET: api/Pessoa
-        [HttpGet]
-        public IEnumerable<string> Get()
+
+        private readonly IPessoaService _pessoaService;
+
+        public PessoaController(IPessoaService pessoaService)
         {
-            return new string[] { "value1", "value2" };
+            _pessoaService = pessoaService;
         }
 
-        // GET: api/Pessoa/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet]
+        public IActionResult Get()
         {
-            return "value";
+            try
+            {
+                var pessoas = _pessoaService.ListarPessoas();
+
+                return new OkObjectResult(pessoas);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new BadRequestObjectResult(new ErrorModel
+                {
+                    Code = 500,
+                    Motivo = e.Message
+                });
+            }
         }
-        
+
+        [HttpGet("{id}", Name = "Get")]
+        public IActionResult Get(int id)
+        {
+            try
+            {
+                var p = _pessoaService.ObterPessoa(id);
+
+                return new OkObjectResult(p);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new BadRequestObjectResult(new ErrorModel
+                {
+                    Code = 500,
+                    Motivo = e.Message
+                });
+            }
+        }
+
         // POST: api/Pessoa
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]Pessoa model)
         {
+            try
+            {
+                var id = _pessoaService.Novo(model);
+                return new OkObjectResult(id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new BadRequestObjectResult(new ErrorModel
+                {
+                    Code = 500,
+                    Motivo = e.Message
+                });
+            }
         }
-        
+
         // PUT: api/Pessoa/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put([FromBody]Pessoa model)
         {
+            try
+            {
+                var id = _pessoaService.Alterar(model);
+                return new OkObjectResult(id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new BadRequestObjectResult(new ErrorModel
+                {
+                    Code = 500,
+                    Motivo = e.Message
+                });
+            }
         }
-        
+
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            try
+            {
+                _pessoaService.RemoverPessoa(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new BadRequestObjectResult(new ErrorModel
+                {
+                    Code = 500,
+                    Motivo = e.Message
+                });
+            }
         }
     }
 }
