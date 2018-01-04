@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
 {
-    [EnableCors("AllowSpecificOrigin")]
+    [EnableCors("AllowAll")]
     [Produces("application/json")]
     [Route("api/Empresa")]
     public class EmpresaController : Controller

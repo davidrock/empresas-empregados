@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Backend.Core.Interfaces;
 using Backend.Core.Models;
 using Backend.Database.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
 {
+    [EnableCors("AllowAll")]
     [Produces("application/json")]
     [Route("api/Colaborador")]
     public class ColaboradorController : Controller

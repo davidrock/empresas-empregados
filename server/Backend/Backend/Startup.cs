@@ -29,7 +29,7 @@ namespace Backend
         {
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
 
             services.AddSingleton<IPessoaService, PessoaService>();
             services.AddSingleton<IEmpresaService, EmpresaService>();
@@ -40,10 +40,17 @@ namespace Backend
             // Add framework services.
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
-                    builder =>
-                        builder.WithOrigins("http://localhost:4200").AllowAnyHeader()
-                            .AllowAnyMethod());
+                //options.AddPolicy("AllowSpecificOrigin",
+                //    builder =>
+                //        builder.WithOrigins("https://davidglobalsysteste.firebaseapp.com/").AllowAnyHeader()
+                //            .AllowAnyMethod());
+
+                options.AddPolicy("AllowAll", p =>
+                {
+                    p.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
 
 
@@ -78,7 +85,7 @@ namespace Backend
             app.UseStaticFiles();
 
             // Shows UseCors with named policy.
-            app.UseCors("AllowSpecificOrigin");
+            app.UseCors("AllowAll");
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
