@@ -5,7 +5,7 @@
 <div class="container">
 
   <router-outlet>
-    <div class="loading"></div>
+    <div *ngIf="isLoadingInProgress" class="loading"></div>
   </router-outlet>
 
 </div>

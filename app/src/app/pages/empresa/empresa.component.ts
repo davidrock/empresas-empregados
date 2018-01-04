@@ -12,6 +12,7 @@ import {
 import { NotificationService } from "../../services/notification.service";
 import "rxjs/add/observable/throw";
 import "rxjs/add/operator/catch";
+import { SpinerService } from "../../services/spiner.service";
 //declare var swal: any;
 @Component({
   selector: "app-empresa",
@@ -21,12 +22,32 @@ import "rxjs/add/operator/catch";
 export class EmpresaComponent implements OnInit {
   empresas: EmpresaModel[] = <EmpresaModel[]>[];
   empresaForm: FormGroup;
-  public mask = [/[1-9]/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/,/\d/,/\d/, /\d/,'-', /\d/,/\d/];
+  public mask = [
+    /[1-9]/,
+    /\d/,
+    ".",
+    /\d/,
+    /\d/,
+    /\d/,
+    ".",
+    /\d/,
+    /\d/,
+    /\d/,
+    "/",
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    "-",
+    /\d/,
+    /\d/
+  ];
 
   constructor(
     private _http: CustomHttpService,
     private _fb: FormBuilder,
-    private _swal: NotificationService
+    private _swal: NotificationService,
+    private _spiner: SpinerService
   ) {}
 
   ngOnInit() {
@@ -35,9 +56,17 @@ export class EmpresaComponent implements OnInit {
   }
 
   obterEmpresas() {
-    this._http.get("empresa").subscribe(res => {
-      this.empresas = res.json();
-    });
+    this._spiner.display(true);
+    this._http.get("empresa").subscribe(
+      res => {
+        this.empresas = res.json();
+      },
+      err => {
+        this._swal.error("Erro", err.json().motivo);
+        this._spiner.display(false);
+      },
+      () => this._spiner.display(false)
+    );
   }
 
   formsInit() {
@@ -50,27 +79,34 @@ export class EmpresaComponent implements OnInit {
 
   adicionar(value: any, valid: boolean) {
     console.log(value);
-
+    this._spiner.display(true);
     this._http.post("empresa", value).subscribe(
       res => {
         this._swal.sucess("Sucesso!", "Empresa adicionada com sucesso!");
         //swal.error("sucesso", "Foi");
         this.obterEmpresas();
       },
-      err => this._swal.error("Erro", err.json().motivo),
-      () => console.log("yay")
+      err => {
+        this._swal.error("Erro", err.json().motivo);
+        this._spiner.display(false);
+      },
+      () => this._spiner.display(false)
     );
   }
 
-  remover(value: EmpresaModel){
+  remover(value: EmpresaModel) {
+    this._spiner.display(true);
     this._http.delete("empresa/" + value.id).subscribe(
       res => {
         this._swal.sucess("Sucesso!", "Empresa removida com sucesso!");
         //swal.error("sucesso", "Foi");
         this.obterEmpresas();
       },
-      err => this._swal.error("Erro", err.json().motivo),
-      () => console.log("yay")
+      err => {
+        this._swal.error("Erro", err.json().motivo);
+        this._spiner.display(false);
+      },
+      () => this._spiner.display(false)
     );
   }
 }

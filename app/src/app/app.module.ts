@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { NotificationService } from "./services/notification.service";
 import { DateValueAccessorModule } from 'angular-date-value-accessor';
 import { TextMaskModule } from 'angular2-text-mask';
+import { SpinerService } from "./services/spiner.service";
 
 const appRoutes: Routes = [
   { path: "empresa", component: EmpresaComponent },
@@ -26,7 +27,7 @@ const appRoutes: Routes = [
   { path: "colaborador", component: ColaboradorComponent },
   {
     path: "**",
-    redirectTo: "colaborador",
+    redirectTo: "empresa",
     pathMatch: "full"
   }
   // { path: '**', component: PageNotFoundComponent }
@@ -59,6 +60,7 @@ export function CustomHttpServiceFactory(
     )
   ],
   providers: [
+    SpinerService,
     ApiXHRBackendService,
     CustomHttpService,
     NotificationService,
